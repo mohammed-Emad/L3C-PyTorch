@@ -31,6 +31,7 @@ from contextlib import contextmanager
 import fasteners
 import numpy as np
 import torch
+from cv2 import imread, resize
 from fjcommon import functools_ext as ft, config_parser, no_op
 from fjcommon.assertions import assert_exc
 from torchvision import transforms
@@ -45,6 +46,7 @@ from collections import namedtuple
 
 from test import cuda_timer
 from test.image_saver import ImageSaver
+torch.cuda.empty_cache()
 
 # used for the Shared RGB basline
 _DEFAULT_RECURSIVE_FOR_RGB = 3
@@ -409,7 +411,8 @@ class MultiscaleTester(object):
 
     @staticmethod
     def _read_img(img_p):
-        img = np.array(Image.open(img_p)).transpose(2, 0, 1)  # Turn into CHW
+        img = resize(imread(img_p), (512,512))
+        img = img.transpose(2, 0, 1)  # Turn into CHW
         C, H, W = img.shape
         # check number of channels
         if C == 4:
