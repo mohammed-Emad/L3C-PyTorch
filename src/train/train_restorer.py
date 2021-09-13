@@ -58,3 +58,5 @@ class TrainRestorer(Restorer):
         log_dir = os.path.dirname(self._out_dir)  # should be .../logs/MMDD_HHdd config config config
         assert logdir_helpers.is_log_dir(log_dir)
         return log_dir
+
+    
